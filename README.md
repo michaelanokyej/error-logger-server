@@ -1,6 +1,6 @@
-# Express Boilerplate!
+# Error Logger Server!
 
-This is a boilerplate project used for starting new projects!
+Under Construction
 
 ## Set up
 
