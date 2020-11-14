@@ -1,78 +1,84 @@
 -- first remove any data that may be present
 TRUNCATE errors;
-TRUNCATE pollers;
+TRUNCATE operations;
 TRUNCATE operators;
 
 
 -- Insert some data into pollers table 
 INSERT INTO
-  pollers (poller_name, description)
+  operations (operation_name, description, category)
 VALUES
   (
-    'RLI Submit', 'Request for Life Insurance Submits'
+    'RLI Submit', 'Request for Life Insurance Submits', 'poller'
   ),
   (
-    'ED', 'Policies are submitted for processing via email'
+    'ED', 'Policies are submitted for processing via email', 'poller'
   ),
   (
-    'EDI', 'Process & encrypts invoices from external companies'
+    'EDI', 'Process & encrypts invoices from external companies', 'poller'
   ),
   (
-    'AutoIndexer', 'Indexes images to policies'
+    'AutoIndexer', 'Indexes images to policies', 'poller'
   ),
   (
-    'XML', 'Loads application data to database'
+    'XML', 'Loads application data to database', 'poller'
   ),
   (
-    'Hot Web', 'Agents view policy statuses via the web'
+    'Hot Web', 'Agents view policy statuses via the web', 'poller'
   ),
   (
-    'CSWeb', 'Customer Service'
+    'CSWeb', 'Customer Service', 'poller'
   ),
   (
-    'Jet Image Merge', 'Ties policy data to a template - Banner'
+    'Jet Image Merge', 'Ties policy data to a template - Banner', 'poller'
   ),
   (
-    'Auto Vend', 'Combines multiple images into single image - Banner'
+    'Auto Vend', 'Combines multiple images into single image - Banner', 'poller'
   ),
   (
-    'Auto Vend-WP', 'Ties policy data to a template - Wm Penn'
+    'Auto Vend-WP', 'Ties policy data to a template - Wm Penn', 'poller'
   ),
   (
-    'Agent Image Merge', 'Ties agent data to a template'
+    'Agent Image Merge', 'Ties agent data to a template', 'poller'
   ),
   (
-    'ETS', 'Moves emails / ETS poller now runs on MDOPSPC3 only'
+    'ETS', 'Moves emails / ETS poller now runs on MDOPSPC3 only', 'poller'
   ),
   (
-    'Task', 'Assigns tasks to appropriate queue'
+    'Task', 'Assigns tasks to appropriate queue', 'poller'
   ),
   (
-    'New Submit', 'AppAssist interviews & HiperScience data formatted for auto submission'
+    'New Submit', 'AppAssist interviews & HiperScience data formatted for auto submission', 'poller'
   ),
   (
-    'PAC', 'Financial tasks with SLA'
+    'PAC', 'Financial tasks with SLA', 'task'
   ),
   (
-    'Duplicate Images', 'Processes duplicate images'
+    'Duplicate Images', 'Processes duplicate images', 'poller'
   ),
   (
-    'AIS Print Manager', 'Generates Policy PDFs for AIS'
+    'AIS Print Manager', 'Generates Policy PDFs for AIS', 'poller'
   ),
   (
-    'Policy Print', 'Printing of policies'
+    'Policy Print', 'Printing of policies', 'poller'
   ),
   (
-    'Banner Correspondence', 'Customer Letters'
+    'Banner Correspondence', 'Customer Letters', 'task'
   ),
   (
-    'Select Quote/Quick Quote', 'Major client rep0resenting LGA lines of business'
+    'Select Quote/Quick Quote', 'Major client rep0resenting LGA lines of business', 'poller'
   ),
   (
-    'Web Interface', 'View of changes to existing policies'
+    'Web Interface', 'View of changes to existing policies', 'poller'
   ),
   (
-    'AppAssist', 'Provides oversight of policies from submission to issue'
+    'GetBanWeb', 'Gets all web payments for banner', 'task'
+  ),
+  (
+    'GetPenWeb', 'Gets all web payments for Penn', 'task'
+  ),
+  (
+    'AppAssist', 'Provides oversight of policies from submission to issue', 'poller'
   );
 
   INSERT INTO
@@ -83,19 +89,28 @@ VALUES
   ),
   (
     'jermail', 'richardson', 'jrichardson'
-  ),
-  (
-    'kyle', 'gadson', 'kgadson'
   );
 
   INSERT INTO
-    errors(operator, error_description, poller_id)
+    errors(operator_id, error_description, operation_id)
   VALUES
   (
     1, 'RLI Submit keeps crashing with 404 error', 1
   ),
   (
     1, 'ED Poller keeps crashing with 404 error', 2
+  ),
+  (
+    2, 'GetBanWeb crashed', 22
+  ),
+  (
+    2, 'GetPennWeb crashed', 23
+  ),
+  (
+    2, 'Banner correspondence crashes whenever attempted', 19
+  ),
+  (
+    2, 'ETS Poller keeps crashing with 404 error', 12
   ),
   (
     1, 'EDI Poller keeps crashing with 404 error', 3

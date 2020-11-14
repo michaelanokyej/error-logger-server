@@ -2,6 +2,12 @@ const errorService = {
   getAllErrors(knex) {
     return knex.select("*").from("errors").orderBy("id", "desc");
   },
+  getAllErrorsAndOperations(knex) {
+    return knex.raw("select e.id as error_id, * from errors e inner join operations o on e.operation_id = o.id order by error_id desc").then(results => {
+        return results.rows;
+      });
+      // order by e.posted desc
+  },
   insertError(knex, newerror) {
     return knex
       .insert(newerror)

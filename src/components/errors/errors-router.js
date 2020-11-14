@@ -9,10 +9,13 @@ const { getErrorValidationError } = require("./error-validator");
 const jwt = require("jsonwebtoken");
 
 const serializeError = (error) => ({
-  id: error.id,
-  operator: xss(error.operator),
+  error_id: error.error_id,
+  operator_id: error.operator_id,
+  is_fixed: error.is_fixed,
   error_description: xss(error.error_description),
-  poller_id: error.poller_id,
+  operation_id: error.operation_id,
+  operation_name: xss(error.operation_name),
+  category: xss(error.category),
   posted: xss(error.posted),
 });
 
@@ -21,17 +24,18 @@ errorsRouter
 
   .get((req, res, next) => {
     errorService
-      .getAllErrors(req.app.get("db"))
+      // .getAllErrors(req.app.get("db"))
+      .getAllErrorsAndOperations(req.app.get("db"))
       .then((errors) => {
         res.json(errors.map(serializeError));
       })
       .catch(next);
   })
   .post(bodyParser, (req, res, next) => {
-    const { operator, error_description, poller_id } = req.body;
-    const newError = { operator, error_description, poller_id };
+    const { operator_id, error_description, operation_id } = req.body;
+    const newError = { operator_id, error_description, operation_id };
 
-    for (const field of ["operator", "error_description", "poller_id"]) {
+    for (const field of ["operator_id", "error_description", "operation_id"]) {
       if (!newError[field]) {
         logger.error(`${field} is required`);
         return res.status(400).send({
@@ -40,9 +44,9 @@ errorsRouter
       }
     }
 
-    const pollerError = getErrorValidationError(newError);
+    const operationError = getErrorValidationError(newError);
 
-    if (pollerError) return res.status(400).send(pollerError);
+    if (operationError) return res.status(400).send(operationError);
 
     errorService
       .insertError(req.app.get("db"), newError)
@@ -90,22 +94,22 @@ errorsRouter
   })
 
   .patch(bodyParser, (req, res, next) => {
-    const { error, userid } = req.body;
-    const errorToUpdate = { error, userid };
+    const { is_fixed } = req.body;
+    const errorToUpdate = { is_fixed };
 
     const numberOfValues = Object.values(errorToUpdate).filter(Boolean).length;
     if (numberOfValues === 0) {
       logger.error(`Invalid update without required fields`);
       return res.status(400).json({
         error: {
-          message: `Request body must content either 'userid'or 'error'`,
+          message: `Request body must content either 'error id'`,
         },
       });
     }
 
-    const pollerError = getErrorValidationError(errorToUpdate);
+    // const operationError = getErrorValidationError(errorToUpdate);
 
-    if (pollerError) return res.status(400).send(pollerError);
+    // if (operationError) return res.status(400).send(operationError);
 
     errorService
       .updateError(req.app.get("db"), req.params.error_id, errorToUpdate)

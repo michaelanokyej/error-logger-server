@@ -2,9 +2,9 @@ const logger = require("../../logger");
 
 const NO_ERRORS = null;
 
-function getErrorValidationError({ operator, error_description, poller_id }) {
-  if (!operator) {
-    logger.error(`Invalid Operator ID '${operator}' supplied`);
+function getErrorValidationError({ operator_id, error_description, operation_id }) {
+  if (!operator_id) {
+    logger.error(`Invalid Operator ID '${operator_id}' supplied`);
     return {
       error: {
         message: `'Operator ID' must be entered`,
@@ -17,11 +17,11 @@ function getErrorValidationError({ operator, error_description, poller_id }) {
         message: `'description' must be entered`,
       },
     };
-  } else if (!poller_id) {
-    logger.error(`Invalid poller ID '${poller_id}' supplied`);
+  } else if (!operation_id) {
+    logger.error(`Invalid operation ID '${operation_id}' supplied`);
     return {
       error: {
-        message: `'poller ID' must be entered`,
+        message: `'operation ID' must be entered`,
       },
     };
   }

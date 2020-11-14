@@ -6,9 +6,11 @@ const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
 const errorHandler = require("./error-handler");
 const pollersRouter = require("./components/pollers/pollers-router");
+const tasksRouter = require("./components/tasks/tasks-router");
 const operatorsRouter = require("./components/operators/operators-router");
 const errorsRouter = require("./components/errors/errors-router");
 const chartRouter = require("./components/chart/chart-router");
+const operationsRouter = require("./components/operations/operations-router");
 
 
 
@@ -25,7 +27,9 @@ app.use(cors());
 
 app.use("/api/chart", chartRouter)
 app.use("/api/pollers", pollersRouter)
+app.use("/api/tasks", tasksRouter)
 app.use("/api/operators", operatorsRouter)
+app.use("/api/operations", operationsRouter)
 app.use("/api/errors", errorsRouter)
 
 
